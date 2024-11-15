@@ -10,7 +10,10 @@ class DashboardController extends Controller
 {
     public function Dashboard()
     {
-        $vehicle_usage = Reservation::select('vehicle_type', DB::raw('count(*) as total'))->groupBy('vehicle_type')->get();
+        $vehicle_usage = Reservation::select('vehicle_type', DB::raw('count(*) as total'))
+            ->where('status', 'approved')
+            ->groupBy('vehicle_type')
+            ->get();
 
         $labels = $vehicle_usage->pluck('vehicle_type');
         $data = $vehicle_usage->pluck('total');
